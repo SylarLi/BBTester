@@ -92,15 +92,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BBConfig.cs" />
     <Compile Include="Macro\BBIfMacro.cs" />
     <Compile Include="Macro\BBMacro.cs" />
     <Compile Include="Macro\BBParallelMacro.cs" />
     <Compile Include="Macro\BBSeriesMacro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Static\BBInputButton.cs" />
+    <Compile Include="Static\BBInputType.cs" />
+    <Compile Include="Static\BBInputUtil.cs" />
     <Compile Include="Static\BBMacroOpCode.cs" />
     <Compile Include="Static\BBMacroType.cs" />
     <Compile Include="Static\BBVirtualKey.cs" />
+    <Compile Include="Util\BBPersistent.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

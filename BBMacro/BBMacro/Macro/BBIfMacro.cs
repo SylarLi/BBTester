@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 
 /// <summary>
-/// 判断成功之后再执行future
+/// 判断成功之后再执行对应序号的item
 /// 如果times>1，再次执行前亦会进行判断
-/// 执行future的时间独立计算，不会计入interval
+/// 执行item的时间独立计算，不会计入interval
 /// 此宏本身不会被执行
 /// </summary>
 public class BBIfMacro: BBMacro
@@ -27,18 +27,18 @@ public class BBIfMacro: BBMacro
 
     public TestCompileResult[] testCompileResults = new TestCompileResult[0];
 
-    public BBMacro[] futures = new BBMacro[0];
+    public BBMacro[] items = new BBMacro[0];
 
     public BBIfMacro()
     {
 
     }
 
-    public BBIfMacro(string[] statements, BBMacro[] futures)
+    public BBIfMacro(string[] statements, BBMacro[] items)
     {
         this.statements = statements;
-        this.futures = futures;
-        if (futures.Any(future => future == null))
+        this.items = items;
+        if (items.Any(item => item == null))
         {
             throw new InvalidDataException();
         }
@@ -65,18 +65,18 @@ public class BBIfMacro: BBMacro
         base.Deserialize(reader);
     }
 
-    public bool Test(out BBMacro future)
+    public bool Test(out BBMacro item)
     {
         for (int i = 0; i < testCompileResults.Length; i++)
         {
             if (testCompileResults[i] != null && 
                 testCompileResults[i]())
             {
-                future = futures[i];
+                item = items[i];
                 return true;
             }
         }
-        future = null;
+        item = null;
         return false;
     }
 
@@ -87,10 +87,10 @@ public class BBIfMacro: BBMacro
         Array.Copy(statements, macro.statements, statements.Length);
         if (deepClone)
         {
-            macro.futures = new BBMacro[futures.Length];
-            for (int i = 0; i < futures.Length; i++)
+            macro.items = new BBMacro[items.Length];
+            for (int i = 0; i < items.Length; i++)
             {
-                macro.futures[i] = futures[i].Clone(deepClone);
+                macro.items[i] = items[i].Clone(deepClone);
             }
         }
         return macro;

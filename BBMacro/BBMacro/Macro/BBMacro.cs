@@ -108,6 +108,9 @@ public class BBMacro
             case BBMacroType.If:
                 macro = new BBIfMacro();
                 break;
+            case BBMacroType.Series:
+                macro = new BBSeriesMacro();
+                break;
             case BBMacroType.Parallel:
                 macro = new BBParallelMacro();
                 break;
@@ -166,6 +169,9 @@ public class BBMacro
         {
             case BBMacroType.If:
                 ret = new BBIfMacro();
+                break;
+            case BBMacroType.Series:
+                ret = new BBSeriesMacro();
                 break;
             case BBMacroType.Parallel:
                 ret = new BBParallelMacro();
