@@ -3,7 +3,6 @@ using System.IO;
 
 /// <summary>
 /// 全局设置
-/// 注1：屏幕坐标原点在左下角，GameView窗口坐标在左上角
 /// </summary>
 [Serializable]
 public class BBConfig
