@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx
 /// </summary>
-public enum BBVirtualKey: ushort
+public enum BBVirtualKey
 {
     VK_NONE = 0x00,
     VK_CANCEL = 0x03,

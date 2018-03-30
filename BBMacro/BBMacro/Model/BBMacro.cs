@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Text;
+using System.Reflection;
 
 /// <summary>
 /// 默认宏，按序列执行
@@ -32,7 +34,7 @@ public class BBMacro
     public int times = 1;
 
     /// <summary>
-    /// 当前宏执行延迟
+    /// 宏每次执行延迟
     /// </summary>
     public float delay = 0;
 
@@ -45,9 +47,14 @@ public class BBMacro
     /// 宏执行前运行的脚本
     /// 注：脚本对宏的修改是永久性的
     /// </summary>
-    public string runScript = "";
+    public string script = "";
     public delegate void ScriptCompileResult(BBMacro macro);
     public ScriptCompileResult scriptCompileResult;
+
+    /// <summary>
+    /// 脚本自定义数据
+    /// </summary>
+    public string scriptData = "";
 
     /// <summary>
     /// 序列宏衔接的下一个
@@ -80,7 +87,8 @@ public class BBMacro
         writer.Write(times);
         writer.Write(duration);
         writer.Write(delay);
-        writer.Write(runScript);
+        writer.Write(script);
+        writer.Write(scriptData);
     }
 
     public virtual void Deserialize(BinaryReader reader)
@@ -97,7 +105,8 @@ public class BBMacro
         times = reader.ReadInt32();
         duration = reader.ReadSingle();
         delay = reader.ReadSingle();
-        runScript = reader.ReadString();
+        script = reader.ReadString();
+        scriptData = reader.ReadString();
     }
 
     public virtual BBMacro Clone(bool deepClone)
@@ -126,7 +135,8 @@ public class BBMacro
         macro.times = times;
         macro.duration = duration;
         macro.delay = delay;
-        macro.runScript = runScript;
+        macro.script = script;
+        macro.scriptData = scriptData;
         if (deepClone)
         {
             if (next != null)
@@ -135,6 +145,25 @@ public class BBMacro
             }
         }
         return macro;
+    }
+
+    public virtual void ToCString(StringBuilder builder, string macroName)
+    {
+        builder.AppendLine(string.Format("BBMacro {0} = new BBMacro();", macroName));
+        string[] fieldNames = new string[] { "code", "button", "key", "data", "times", "duration", "delay", "script", "scriptData" };
+        foreach (string fieldName in fieldNames)
+        {
+            FieldInfo fieldInfo = GetType().GetField(fieldName, BindingFlags.GetField | BindingFlags.Instance | BindingFlags.Public);
+            builder.Append(string.Format("{0}.{1} = ", macroName, fieldName));
+            BBUtil.ConcatMemberString(builder, fieldInfo.FieldType, fieldInfo.GetValue(this));
+            builder.AppendLine(";");
+        }
+        if (next != null)
+        {
+            string nextMacroName = macroName + "_n";
+            next.ToCString(builder, nextMacroName);
+            builder.AppendLine(string.Format("{0}.next = {1};", macroName, nextMacroName));
+        }
     }
 
     public virtual BBMacroType macroType

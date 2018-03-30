@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 
 public sealed class BBPersistent
 {
@@ -125,5 +126,14 @@ public sealed class BBPersistent
             macro.next = Load(reader);
         }
         return macro;
+    }
+
+    public static void Export(BBConfig config, BBMacro macro, string path)
+    {
+        StringBuilder builder = new StringBuilder();
+        config.ToCString(builder, "config");
+        builder.AppendLine();
+        macro.ToCString(builder, "macro");
+        File.WriteAllText(path, builder.ToString());
     }
 }

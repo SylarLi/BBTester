@@ -129,7 +129,7 @@
     private bool IsNiceSnapshot(BBInputSnapshot snapshot)
     {
         bool ret = false;
-        if (BBInputUtil.IsMouseInputType(snapshot.type))
+        if (BBUtil.IsStrokeInputType(snapshot.type))
         {
             if (snapshot.type == BBInputType.Move ||
                 snapshot.type == BBInputType.Wheel)
@@ -144,7 +144,7 @@
                 ret = true;
             }
         }
-        else if (BBInputUtil.IsKeyboardInputType(snapshot.type) && mRecordKeyboard)
+        else if (BBUtil.IsKeyboardInputType(snapshot.type) && mRecordKeyboard)
         {
             ret = true;
         }

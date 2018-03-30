@@ -197,9 +197,9 @@ public class BBMacroRecorder
             BBInputSnapshot snapshot = snapshots[i];
             BBMacro macro = new BBMacro();
             macro.button = snapshot.button;
-            macro.code = BBInputUtil.InputType2OpCode(snapshot.type);
+            macro.code = BBUtil.InputType2OpCode(snapshot.type);
             macro.key = snapshot.key;
-            if (BBInputUtil.IsMouseInputType(snapshot.type))
+            if (BBUtil.IsStrokeInputType(snapshot.type))
             {
                 var coord = mConfig.Screen2Axis(snapshot.inputPosition);
                 if (snapshot.type == BBInputType.Wheel)

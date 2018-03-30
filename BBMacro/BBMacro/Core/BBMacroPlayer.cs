@@ -140,12 +140,17 @@ public class BBMacroPlayer
                         }
                         if (mCurrentDelay < 0)
                         {
-                            bool blocked = false;
-                            Execute(mCurrent, out blocked);
-                            if (!blocked)
+                            BBLoopAction action = BBLoopAction.Continue;
+                            Execute(mCurrent, out action);
+                            if (action == BBLoopAction.Continue)
                             {
                                 mCurrentTime += mCurrent.duration;
                                 mCurrentTime += mCurrentDelay;
+                            }
+                            else if (action == BBLoopAction.Break)
+                            {
+                                mCurrentTimes = mCurrent.times;
+                                mCurrentTime = -float.Epsilon;
                             }
                             mCurrentDelay = 0;
                         }
@@ -172,9 +177,9 @@ public class BBMacroPlayer
         mDisposed = true;
     }
 
-    private void Execute(BBMacro macro, out bool blocked)
+    private void Execute(BBMacro macro, out BBLoopAction action)
     {
-        blocked = false;
+        action = BBLoopAction.Continue;
         switch (macro.macroType)
         {
             case BBMacroType.If:
@@ -189,7 +194,7 @@ public class BBMacroPlayer
                 }
                 else
                 {
-                    blocked = ifmacro.blockWhenTestFailed;
+                    action = ifmacro.action;
                 }
                 break;
             case BBMacroType.Series:

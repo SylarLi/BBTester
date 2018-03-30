@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Text;
+using System.Reflection;
 
 /// <summary>
 /// 全局设置
@@ -43,9 +45,14 @@ public class BBConfig
     public int screenHeight = 1;
 
     /// <summary>
+    /// 宏录制/执行设备
+    /// </summary>
+    public BBInputDevice device = BBInputDevice.Mouse;
+
+    /// <summary>
     /// 监听的鼠标按钮事件
     /// </summary>
-    public BBInputButton monitoringButtons = BBInputButton.MouseLeft | BBInputButton.MouseMiddle | BBInputButton.MouseRight;
+    public BBInputButton monitoringButtons = BBInputButton.Stroke0 | BBInputButton.Stroke1 | BBInputButton.Stroke2;
 
     /// <summary>
     /// 是否监听键盘事件
@@ -132,6 +139,7 @@ public class BBConfig
         writer.Write(clipRatio);
         writer.Write(screenWidth);
         writer.Write(screenHeight);
+        writer.Write((byte)device);
         writer.Write((int)monitoringButtons);
         writer.Write(monitoringKeyboard);
     }
@@ -142,7 +150,21 @@ public class BBConfig
         clipRatio = reader.ReadSingle();
         screenWidth = reader.ReadInt32();
         screenHeight = reader.ReadInt32();
+        device = (BBInputDevice)reader.ReadByte();
         monitoringButtons = (BBInputButton)reader.ReadInt32();
         monitoringKeyboard = reader.ReadBoolean();
+    }
+
+    public void ToCString(StringBuilder builder, string configName)
+    {
+        builder.AppendLine(string.Format("BBConfig {0} = new BBConfig();", configName));
+        string[] fieldNames = new string[] { "axisType", "clipRatio", "screenWidth", "screenHeight", "device", "monitoringButtons", "monitoringKeyboard" };
+        foreach (string fieldName in fieldNames)
+        {
+            FieldInfo fieldInfo = GetType().GetField(fieldName, BindingFlags.GetField | BindingFlags.Instance | BindingFlags.Public);
+            builder.Append(string.Format("{0}.{1} = ", configName, fieldName));
+            BBUtil.ConcatMemberString(builder, fieldInfo.FieldType, fieldInfo.GetValue(this));
+            builder.AppendLine(";");
+        }
     }
 }

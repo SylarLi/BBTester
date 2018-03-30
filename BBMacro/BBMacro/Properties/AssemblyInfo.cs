@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("BBMacro")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("LL")]
 [assembly: AssemblyProduct("BBMacro")]
-[assembly: AssemblyCopyright("Copyright © Sylar 2018")]
+[assembly: AssemblyCopyright("Copyright © LL 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

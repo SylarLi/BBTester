@@ -98,6 +98,7 @@
     <Compile Include="Core\BBMacroCapture.cs" />
     <Compile Include="Core\BBMacroPlayer.cs" />
     <Compile Include="Core\BBMacroRecorder.cs" />
+    <Compile Include="Core\Compiler\IStatementCompiler.cs" />
     <Compile Include="Core\ModuleProxy\IBBInputModuleProxy.cs" />
     <Compile Include="Model\BBIfMacro.cs" />
     <Compile Include="Model\BBMacro.cs" />
@@ -106,9 +107,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Static\BBInputButton.cs" />
     <Compile Include="Static\BBInputType.cs" />
-    <Compile Include="Static\BBInputUtil.cs" />
+    <Compile Include="Static\BBUtil.cs" />
+    <Compile Include="Static\BBLoopAction.cs" />
     <Compile Include="Static\BBMacroOpCode.cs" />
     <Compile Include="Static\BBMacroType.cs" />
+    <Compile Include="Static\BBInputDevice.cs" />
     <Compile Include="Static\BBVirtualKey.cs" />
     <Compile Include="Util\BBPersistent.cs" />
   </ItemGroup>
